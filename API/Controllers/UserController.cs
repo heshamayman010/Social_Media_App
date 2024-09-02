@@ -1,12 +1,11 @@
 using API.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    [Route("api/[controller]")]  // this will be called localhost:port/api/User
-    [ApiController]
-    public class UserController(AppDbContext context) : ControllerBase
+    public class UserController(AppDbContext context) : BaseApiController
     {
         private readonly AppDbContext context = context;
 
@@ -18,7 +17,7 @@ namespace API.Controllers
 
     }
 
-
+[Authorize]
     [HttpGet("{id}")]
     public IActionResult Getuser(int id){
 
