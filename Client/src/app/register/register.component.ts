@@ -1,6 +1,7 @@
 import { Component, EventEmitter, inject, input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AccountServiceService } from '../_Services/account-service.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-register',
@@ -11,6 +12,8 @@ import { AccountServiceService } from '../_Services/account-service.service';
 })
 export class RegisterComponent {
 
+
+  toastr=inject(ToastrService)
 service=inject(AccountServiceService);
   cancle() {
 
@@ -32,7 +35,7 @@ this.service.Register(this.model).subscribe({
 
     console.log(response);
   },
-  error:erorr=>console.log(erorr)
+  error:error=>this.toastr.error(error.error)
 });
 
 

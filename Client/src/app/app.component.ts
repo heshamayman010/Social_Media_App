@@ -21,7 +21,6 @@ export class AppComponent implements OnInit {
 
 
 
-// function to check if the user has data stored in the local storage
 
 
 }
