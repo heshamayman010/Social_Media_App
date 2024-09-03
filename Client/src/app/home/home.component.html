@@ -1,0 +1,46 @@
+<div class="container mt-5">
+
+    <div style="text-align:center;">
+           
+        @if(!registermode){
+
+        <h1> Find Your Friends </h1>
+
+                <p class="lead"> You Can Find All Your Friends here Just Login </p>
+
+            <div class="text-lg-center">
+
+                    <button class="btn btn-success" (click)="registertoggle()"> Register </button>
+                    <button class="btn btn-dark"> Ask For Help </button>
+            </div>
+
+
+        }
+        @else if(registermode) {
+
+            <div class=" container">
+
+                <div class="row justify-content-center">
+
+
+                        <div class="col-4">
+                            <app-register 
+                            (cancletheregister)="cancleregisterathome($event)"
+                            ></app-register>
+
+                        </div>
+
+                </div>
+
+            </div>
+
+
+
+
+
+        }
+        
+    </div>
+
+
+</div>
