@@ -1,1 +1,16 @@
-<p>members-list works!</p>
+<h1>welcome</h1>
+<div class="row">
+
+
+        @for (item of Memberstoshow; track $index) {
+
+    <div class="col-3">
+
+        <app-memeber-card [usertoshow]="item"></app-memeber-card>    
+
+    </div>
+        
+        }
+
+
+</div>

@@ -12,6 +12,8 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class RegisterComponent {
 
+  validationerorrArray:string[]=[];
+
 
   toastr=inject(ToastrService)
 service=inject(AccountServiceService);
@@ -28,6 +30,9 @@ model:any={};
 
 resgister() {
 
+  if(this.model.username==""){ this.toastr.error("username cant be empty ")}
+  if(this.model.password==""){ this.toastr.error("password cant be empty ")}
+    
 this.service.Register(this.model).subscribe({
 
 
@@ -35,7 +40,11 @@ this.service.Register(this.model).subscribe({
 
     console.log(response);
   },
-  error:error=>this.toastr.error(error.error)
+  error:error=>{
+    this.validationerorrArray=error;
+  }
+
+
 });
 
 

@@ -16,7 +16,7 @@ runGuardsAndResolvers:'always',
 children:[
 {path:'messages',component:MessagesComponent},
 {path:'members',component:MembersListComponent},
-{path:'members/:id',component:MembersDataComponent},
+{path:'members/:username',component:MembersDataComponent},
 {path:'lists',component:ListsComponent},
 ]
 

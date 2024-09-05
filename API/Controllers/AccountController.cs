@@ -18,22 +18,24 @@ public async Task <ActionResult<UserDto>> Register(RegisterDto dto)
 {
 
     if(await uniquname(dto.username)) return BadRequest("this user name is already taken choose another one");
-    using var hm =new HMACSHA512();
+   
+    
+//     using var hm =new HMACSHA512();
 
-var User=new AppUser{
-UserName=dto.username,
-PasswordHash=hm.ComputeHash(Encoding.UTF8.GetBytes(dto.password)),
-PasswordSalt=hm.Key
+// var User=new AppUser{
+// UserName=dto.username,
+// PasswordHash=hm.ComputeHash(Encoding.UTF8.GetBytes(dto.password)),
+// PasswordSalt=hm.Key
 
-};
-context.appUsers.Add(User);
-await context.SaveChangesAsync();
-return new UserDto(){
-UserName=User.UserName,
-Token=service.CreateToken(User)
-};
+// };
+// context.appUsers.Add(User);
+// await context.SaveChangesAsync();
+// return new UserDto(){
+// UserName=User.UserName,
+// Token=service.CreateToken(User)
+// };
 
-
+return Ok();
 
 
     }

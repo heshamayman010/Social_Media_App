@@ -10,16 +10,10 @@ import { AccountServiceService } from '../_Services/account-service.service';
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
-export class HomeComponent implements OnInit {
-ngOnInit(): void {
-this.getuser()
-this.currentuser();
-
-
-}
+export class HomeComponent  {
 http=inject(HttpClient);
-  users: any;
-  service=inject(AccountServiceService);
+  // users: any;
+  // service=inject(AccountServiceService);
 
 
 registermode=false;
@@ -30,30 +24,47 @@ registertoggle(){
 }
 
 
-getuser()
-{
- this.http.get(`http://localhost:5000/api/user`).subscribe(
 
-      {
-      next:response=>this.users=response,
-      error:error=>console.log(`${error}`),
-      complete:()=>console.log("you finished the call successfully")
-      }
-    )
-}
 
-currentuser(){
-const userdata=localStorage.getItem('user');
-if(!userdata)return;
-let userobject=JSON.parse(userdata);
-this.service.currentuser.set(userobject)
 
-}
+
 cancleregisterathome(event: boolean) {
 
 this.registermode=event;
 
 }
+
+
+
+
+// ngOnInit(): void {
+// this.getuser()
+// this.currentuser();
+
+
+// }
+
+
+// getuser()
+// {
+//  this.http.get(`http://localhost:5000/api/user`).subscribe(
+
+//       {
+//       next:response=>this.users=response,
+//       error:error=>console.log(`${error}`),
+//       complete:()=>console.log("you finished the call successfully")
+//       }
+//     )
+// }
+
+// currentuser(){
+// const userdata=localStorage.getItem('user');
+// if(!userdata)return;
+// let userobject=JSON.parse(userdata);
+// this.service.currentuser.set(userobject)
+
+// }
+
 
 
 }

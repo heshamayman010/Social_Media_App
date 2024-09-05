@@ -1,13 +1,17 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace API.Dtos;
 
 public class RegisterDto
 {
 
-public required string username { get; set; }
+[Required]
+public  string username { get; set; }=string.Empty;
 
-public required string password { get; set; }
+[Required]
+[StringLength(20,MinimumLength =8)]
+public  string password { get; set; }=string.Empty;
 
 
 }

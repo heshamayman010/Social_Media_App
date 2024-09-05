@@ -1,1 +1,113 @@
-<p>members-data works!</p>
+@if (member) {
+
+    <div class="row main" >
+
+        <div class="col-5 second">
+
+            <div class="card " >
+
+<!-- // here we will make alternative in the source as if user is just registerd and didnt upload phot -->
+<img src="{{member.photoUrl ||'./assets/user.png' }}" alt="{{member.knownAs}}"
+
+class="card-img img-thumbnail"
+>
+
+
+            <div class="card-body">
+                <strong> Location  </strong>
+
+                    <p> {{member.city}} ...  {{member.country}}</p>
+            </div>
+
+
+                        <div class="card-body">
+                <strong> Age  </strong>
+
+                    <p> {{member.age}}</p>
+            </div>
+
+            <div class="card-body">
+                <strong> LastActive  </strong>
+
+                    <p> {{member.lAstActiv}} </p>
+            </div>
+
+            <div class="card-body">
+                <strong> Member Since  </strong>
+
+                    <p> {{member.created}} </p>
+            </div>
+
+
+            </div>
+
+
+<div class="card-footer">
+<div class="btn-group d-flex">
+<button class="btn btn-danger"> LIKE </button>
+<button class="btn btn-success"> DM </button>
+
+</div>
+
+</div>
+
+        </div>
+
+
+        <!-- the part of the tab  -->
+
+
+        <div class="col-7">
+            <tabset class="member-tabs">
+<br>
+                <tab heading="Info About {{member.knownAs}}">
+                    <h4>
+                    Description
+                    </h4>
+                    <p>
+                    {{member.introduction}}
+                    </p>
+
+                </tab>
+
+              <tab heading="Intersts">
+                    <h4>
+                    Intersts
+                    </h4>
+                    <p>
+                    {{member.interstes}}
+                    </p>
+
+                </tab>
+                              <tab heading="Messages">
+                    <h4>
+                    Messages 
+                    </h4>
+                    <p>
+                   messages will be here 
+                    </p>
+
+                </tab>
+              <tab heading="Photos">
+                    <h4>
+                    Photos
+                    </h4>
+                    <p>
+Photos will be here 
+                    </p>
+
+                </tab>
+
+
+
+
+            </tabset>
+
+        </div>
+
+
+    </div>
+
+
+
+}
