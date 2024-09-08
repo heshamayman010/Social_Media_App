@@ -12,7 +12,7 @@ export class AccountServiceService {
   // constructor(private http:HttpClient) { }
 
 // to create signal 
-currentuser=signal<User|null>(null);
+ currentuser=signal<User|null>(null);
 
    basuerl="http://localhost:5000/api/"
   private http=inject(HttpClient);
@@ -37,12 +37,13 @@ constructor() {
 
 
   login(model:any){
-// using the map here is for makin the user stay persistant 
+
     return this.http.post<User>(this.basuerl+"Account/login",model).pipe(
       map(user=>{
         if(user){
       localStorage.setItem('user',JSON.stringify(user));
       this.currentuser.set(user);
+
         }
       })
 
@@ -70,7 +71,7 @@ constructor() {
 
 logout(){
 
-localStorage.setItem('user','');
+localStorage.removeItem('user');
 this.currentuser.set(null);
 
 

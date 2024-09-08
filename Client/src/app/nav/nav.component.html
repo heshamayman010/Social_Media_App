@@ -4,7 +4,6 @@
 <nav class="navbar navbar-expand-md navbar-dark bg-dark mb-4">
       <a class="navbar-brand" routerLinkActive="active" routerLink="/">Social Media App</a>
 
-
       <div class="collapse navbar-collapse" id="navbarCollapse">
              @if(accountservice.currentuser()){
  <ul class="navbar-nav mr-auto">
@@ -20,9 +19,6 @@
             <a class="nav-link" routerLink="/messages" routerLinkActive="active">Messages</a>
           </li>
 
-                      <li class="nav-item">
-            <a class="nav-link" (click)="logout()" style="cursor: pointer;">Logout</a>
-          </li>
 
         </ul>
 
@@ -33,11 +29,11 @@
       @if(accountservice.currentuser()){
 
         <div  dropdown class="dropdown ms-auto" >
-            <a dropdownToggle class="dropdown-toggle text-light " style="text-decoration: solid;"> welcome user {{model.userName}}</a>
+            <a dropdownToggle class="dropdown-toggle text-light " style="text-decoration: solid;"> welcome  {{accountservice.currentuser()?.userName}}</a>
             <div *dropdownMenu   class="dropdown-menu">
                 <a class="dropdown-item" (click)="logout()">Logout</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item">Edit Profile</a>
+                <a routerLink="member-edit" class="dropdown-item">Edit Profile</a>
 
             </div>
         </div>

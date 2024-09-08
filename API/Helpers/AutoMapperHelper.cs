@@ -17,6 +17,7 @@ public class AutoMapperHelper:Profile
         ;
         CreateMap<Photo,PhotoDto>();
         
+        CreateMap<MemeberUpdateDto,AppUser>();
     }
 
 }

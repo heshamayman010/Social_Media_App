@@ -1,7 +1,7 @@
 export interface User {
 
-    username:string;
-    toekn:string;
+    userName:string;
+    token:string;
 
 
 }

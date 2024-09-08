@@ -11,7 +11,7 @@ export const appConfig: ApplicationConfig = {
   providers: [provideRouter(routes)
 ,
 // and we will use the provide httpclient to be able to make api calls 
-provideHttpClient(withInterceptors([erorrInterceptor,jWtInterceptor]))
+provideHttpClient(withInterceptors([jWtInterceptor,erorrInterceptor]))
 ,provideAnimations(),
 provideToastr(
 

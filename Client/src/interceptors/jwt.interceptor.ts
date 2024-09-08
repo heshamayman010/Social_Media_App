@@ -10,9 +10,10 @@ export const jWtInterceptor: HttpInterceptorFn = (req, next) => {
   // now the req is emutable so we must make clone of it and send the clone 
 
   if(account.currentuser()){ // this to check if the user is loged in 
-  req=req.clone({
+  console.log("here we reached the current user token and it is "+`${account.currentuser()?.token}`)
+    req=req.clone({
 setHeaders:{
-Authorization: `Bearer ${account.currentuser()?.toekn}`
+Authorization: `Bearer ${account.currentuser()?.token}`
 }
   })
 }

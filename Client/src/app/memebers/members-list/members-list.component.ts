@@ -15,10 +15,10 @@ export class MembersListComponent implements OnInit {
 
   memberservice=inject(MebmerServiceService);
   http=inject(HttpClient);
-  Memberstoshow:Member[]=[]
 
   ngOnInit(): void {
-this.loadMembers();
+    if(this.memberservice.members().length===0) this.loadMembers();
+
   }
 
 
@@ -26,11 +26,9 @@ this.loadMembers();
 // function to load all the members
 
    loadMembers() {
- this.memberservice.getAllMembers().subscribe({
-  next:membersback=>this.Memberstoshow=membersback,
-  error:er=>console.log(` >>>>>>>>>>>>>>>>>>>>>>
-    ${er}`)
-})
+
+ this.memberservice.getAllMembers();
+}
 }
 
 
@@ -38,6 +36,6 @@ this.loadMembers();
 
 
 
-}
+
 
 

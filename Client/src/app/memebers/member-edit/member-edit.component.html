@@ -1,0 +1,148 @@
+@if (member) {
+
+    <div class="row main" >
+
+        <div class="col-5">
+
+            <h2>profile </h2>
+
+        </div>
+            <div class="col-7" >
+@if (myform.dirty) {
+
+                <div class="alert alert-info pb-0">
+
+                  <p>
+<strong>Information</strong>  You have made changes any unsaved changes will be lost 
+                  </p>  
+                </div>
+        }
+
+            </div>
+
+            <div class="col-5 second">
+
+            <div class="card " >
+
+<!-- // here we will make alternative in the source as if user is just registerd and didnt upload phot -->
+<img src="{{member.photoUrl ||'./assets/user.png' }}" alt="{{member.knownAs}}"
+
+class="card-img img-thumbnail"
+>
+
+
+            <div class="card-body">
+                <strong> Location  </strong>
+
+                    <p> {{member.city}} ...  {{member.country}}</p>
+            </div>
+
+
+                        <div class="card-body">
+                <strong> Age  </strong>
+
+                    <p> {{member.age}}</p>
+            </div>
+
+            <div class="card-body">
+                <strong> LastActive  </strong>
+
+                    <p> {{member.lAstActiv}} </p>
+            </div>
+
+            <div class="card-body">
+                <strong> Member Since  </strong>
+
+                    <p> {{member.created}} </p>
+            </div>
+
+
+            </div>
+
+
+<div class="card-footer">
+</div>
+
+<button class="btn btn-primary col-12 " form="myform" [disabled]="!myform.dirty"> Save changes  </button>
+        </div>
+
+
+        <!-- the part of the tab  -->
+
+
+        <div class="col-7">
+            <tabset class="member-tabs">
+<br>
+                <tab heading="Info About {{member.knownAs}}">
+                 
+                 
+                    <form id="myform" (ngSubmit)="updatemember()" #myform="ngForm">
+
+                    <h3 class="mt-3"> Description  </h3>
+                    <textarea  [(ngModel)]="member.introduction"
+                    class="form-control"
+                    name="introduction" 
+                    rows="6">
+
+
+                    </textarea>
+                    <br>
+                                        <h3 class="mt-3"> Interstes  </h3>
+                    <textarea  [(ngModel)]="member.interstes"
+                    class="form-control"
+                    name="interstes" 
+                    rows="6">
+
+
+                    </textarea>
+<br>
+                    <h3 class="mt-3"> Looking For   </h3>
+                    <textarea  [(ngModel)]="member.lookingFor"
+                    class="form-control"
+                    name="lookingFor" 
+                    rows="6">
+                    </textarea>
+
+<br>
+                        <div class="d-flex align-items-center">
+
+                            <label class="col-1">City :</label>
+                        
+                            <input type="text" class="mx-1 form-control" [(ngModel)]="member.city" name="city">
+                        </div>
+                        <br>
+                            <div class="d-flex align-items-center">
+
+                            <label class="col-1">country :</label>
+                        
+                            <input type="text" class="mx-1 form-control" [(ngModel)]="member.country" name="country">
+                        </div>
+
+
+                    </form>
+
+
+                </tab>
+
+
+
+
+              <tab heading="Edit Photos ">
+                    <h4>
+                    Editing Photos will be here 
+                    </h4>
+                    <p>
+                    {{member.interstes}}
+                    </p>
+
+                </tab>
+            </tabset>
+
+        </div>
+
+
+    </div>
+
+
+
+}
