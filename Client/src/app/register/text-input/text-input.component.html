@@ -1,0 +1,26 @@
+
+    <div class="form-floating mb-4">
+    <input  
+           placeholder="enter your name" 
+           class="form-control"
+           [type]="type()"
+           [class.is-invalid]="control.touched && control.invalid"
+           [formControl]="control">
+    <label>{{label()}}</label>
+
+    <div *ngIf="control?.hasError('required')" class="invalid-feedback">
+        Please enter a {{label()}}
+    </div>
+
+    <div *ngIf="control?.hasError('maxlength')" class="invalid-feedback">
+        {{label()}} must be no more than {{control.errors?.['maxlength'].requiredLength}} characters
+    </div>
+
+    <div *ngIf="control?.hasError('IsMatch')" class="invalid-feedback">
+        You must enter the same password
+    </div>
+
+    <div *ngIf="control?.hasError('minlength')" class="invalid-feedback">
+        {{label()}} must be at least {{control.errors?.['minlength'].requiredLength}} characters
+    </div>
+</div>

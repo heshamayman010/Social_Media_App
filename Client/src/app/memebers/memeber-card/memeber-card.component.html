@@ -1,8 +1,7 @@
 <div class="card mb-3 ">
 
     <div class="card-img-wrapper">
-
-        <img src="{{usertoshow().photoUrl}}" alt="{{usertoshow().knownAs}}" class="card-img-top">
+        <img src="{{usertoshow().photoUrl||'.\\assets\\user.png'}}" alt="{{usertoshow().knownAs}}" class="card-img-top">
 
         <ul class="list-inline text-center animate members-icon">
 

@@ -1,31 +1,138 @@
-<form #registerform="ngForm" (submit)="resgister()" autocomplete="off"> 
+<form [formGroup]="registerform" (submit)="resgister()" autocomplete="off"> 
 
 
     <h3 class="text-center text-primary">
         Register
      </h3>
 
+
+
+
+
+         <div class="form-floating mb-4">
+    <app-text-input 
+    [formControl]="$any(registerform.controls['username']) " 
+    [label]="'username'"
+    >
+    </app-text-input>
+    </div>
+
+
+
+<div class="mb-3">
+
+    <label style="margin-right: 10px;">  Iam a </label>
+        
+    <label class="form-check-label">   
+        <input type="radio" class="form-check-input" value="male" formControlName="gender">  Male     
+
+        </label>
+        
+    <label class="form-check-label">   
+        <input type="radio" class="form-check-input " value="Female" formControlName="gender">  Female 
+        
+        </label>
+
+</div>
+
+
+
+    <div class="form-floating mb-4">
+    <app-text-input 
+    [formControl]="$any(registerform.controls['password']) " 
+    [label]="'password'"
+    >
+    </app-text-input>
+    </div>
+
     <div class="form-floating mb-4">
 
 
-    <input name="username" placeholder="enter you name" class="form-control" [(ngModel)]="model.username">
-    <label>User Name</label>
-
+    <app-text-input 
+    [formControl]="$any(registerform.controls['comparepassword']) " 
+    [label]="'comparepassword'"
+    >
+    </app-text-input>
     </div>
 
 
-     <div class="form-floating mb-4">
-
-    <input name="Password" placeholder="enter you password" class="form-control" [(ngModel)]="model.password" type="password">
-    <label >password</label>
-
+<!-- ---------------------- -->
+    <div class="form-floating mb-4">
+    <app-text-input 
+    [formControl]="$any(registerform.controls['knownAs']) " 
+    [label]="'knownAs'"
+    >
+    </app-text-input>
     </div>
+
+    <div class="form-floating mb-4">
+    <app-text-input 
+    [formControl]="$any(registerform.controls['dateOfBirth']) " 
+    [label]="'dateOfBirth'"
+    [type]="'date'"
+    >
+    </app-text-input>
+    </div>
+
+
+    <div class="form-floating mb-4">
+    <app-text-input 
+    [formControl]="$any(registerform.controls['city']) " 
+    [label]="'city'"
+    >
+    </app-text-input>
+    
+</div>
+
+<div class="form-floating mb-4">
+    <app-text-input 
+    [formControl]="$any(registerform.controls['country']) " 
+    [label]="'country'"
+    >
+    </app-text-input>
+    </div>
+
+
 
 <div class="form-control text-center" >
  
-<button class="btn btn-success me-2"  (submit)="resgister()" type="submit">  Register</button>
+<button class="btn btn-success me-2"  (submit)="resgister()" 
+[disabled]="!registerform.valid"
+
+type="submit">  Register</button>
 <button class="btn me-2" (click)="cancle()" type="button"> Cancle </button>
 </div>
 </form>
 
 
+
+<!-- 
+
+@if (validationerorrArray) {
+
+    <div class="alert-dark alert">
+
+        the erros will be here 
+
+        @for (item of validationerorrArray; track $index) {
+
+            <ul>
+ <li>
+                {{item}}
+            </li>
+            </ul>
+           
+        }
+    </div>
+}
+
+<p>
+    {{registerform.value|json}}
+</p>
+
+
+
+<p>
+    {{registerform.valid|json}} 
+
+</p> -->

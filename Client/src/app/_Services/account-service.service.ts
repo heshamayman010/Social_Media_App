@@ -56,7 +56,6 @@ constructor() {
     return this.http.post<User>(this.basuerl+"Account/register",model).pipe(
       map(user=>{
         if(user){
-     
           this.setcurrentuser(user);
         }
      return user;

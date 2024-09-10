@@ -18,6 +18,12 @@ public class AutoMapperHelper:Profile
         CreateMap<Photo,PhotoDto>();
         
         CreateMap<MemeberUpdateDto,AppUser>();
+    
+        CreateMap<RegisterDto,AppUser>();
+        // the next one is to configure the change from the string to date only 
+
+        CreateMap<string ,DateOnly>().ConstructUsing(x=>DateOnly.Parse(x));
+    
     }
 
 }

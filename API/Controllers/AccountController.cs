@@ -2,15 +2,17 @@ using System.Security.Cryptography;
 using System.Text;
 using API.Dtos;
 using API.Entities;
+using API.Extensions;
 using API.interfaces;
 using API.Services;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
-    public class AccountController (AppDbContext context,ITokenService service): BaseApiController
+    public class AccountController (AppDbContext context,ITokenService service,IMapper mapper): BaseApiController
     {
 
         [HttpPost("register")]
@@ -20,24 +22,19 @@ public async Task <ActionResult<UserDto>> Register(RegisterDto dto)
     if(await uniquname(dto.username)) return BadRequest("this user name is already taken choose another one");
    
     
-//     using var hm =new HMACSHA512();
+    using var hm =new HMACSHA512();
 
-// var User=new AppUser{
-// UserName=dto.username,
-// PasswordHash=hm.ComputeHash(Encoding.UTF8.GetBytes(dto.password)),
-// PasswordSalt=hm.Key
-
-// };
-// context.appUsers.Add(User);
-// await context.SaveChangesAsync();
-// return new UserDto(){
-// UserName=User.UserName,
-// Token=service.CreateToken(User)
-// };
-
-return Ok();
-
-
+var user=mapper.Map<AppUser>(dto);
+user.UserName=dto.username;
+user.PasswordHash=hm.ComputeHash(Encoding.UTF8.GetBytes(dto.password));
+user.PasswordSalt=hm.Key;
+context.appUsers.Add(user);
+await context.SaveChangesAsync();
+return new UserDto(){
+UserName=user.UserName,
+Token=service.CreateToken(user)
+,knownas=user.KnownAs
+};
     }
 
 
@@ -65,6 +62,7 @@ return new UserDto(){
     UserName=user.UserName,
     Token=service.CreateToken(user),
     photpUrl=user.Photos.FirstOrDefault(x=>x.IsMain)?.Url
+    ,knownas=user.KnownAs
 };
 
 }
