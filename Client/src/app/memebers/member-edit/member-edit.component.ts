@@ -5,11 +5,12 @@ import { Member } from '../../_models/Member';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { FormsModule, NgForm } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
+import { PhotoEditorComponent } from "../photo-editor/photo-editor.component";
 
 @Component({
   selector: 'app-member-edit',
   standalone: true,
-  imports: [TabsModule,FormsModule],
+  imports: [TabsModule, FormsModule, PhotoEditorComponent],
   templateUrl: './member-edit.component.html',
   styleUrl: './member-edit.component.css'
 })
@@ -17,6 +18,8 @@ import { ToastrService } from 'ngx-toastr';
 
 export class MemberEditComponent implements OnInit{
 @HostListener('window:beforeunload', ['$event']) 
+
+
 notify($event: any) {
   if (this.myform?.dirty) {
     $event.returnValue = true;  // Corrected to returnValue

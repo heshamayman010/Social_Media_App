@@ -3,7 +3,8 @@ import { inject, Injectable, signal } from '@angular/core';
 import { AccountServiceService } from './account-service.service';
 import { environment } from '../../environments/environment.development';
 import { Member } from '../_models/Member';
-import { of } from 'rxjs';
+import { of, tap } from 'rxjs';
+import { Photo } from '../_models/Photo';
 
 @Injectable({
   providedIn: 'root'
@@ -56,4 +57,45 @@ getheaderoption(){
 return{
 headers:new HttpHeaders({
 Authorization:`Bearer ${this.account.currentuser()?.token}`
-})}}}
+})}
+}
+// this is the old one but now we want also to make the changes appear instantly 
+// setmaiphoto(id:number ){
+
+// return this.http.put(this.url+'user/set-main-photo/'+id,{})
+
+// }
+
+setmaiphoto(photo :Photo){
+
+return this.http.put(this.url+'user/set-main-photo/'+photo.id,{}).pipe(
+tap(()=>
+  {
+
+    this.members.update(
+members=>members.map(m=>{
+
+  if(m.photos.includes(photo)){
+    m.photoUrl=photo.url;
+
+  }
+  return m;
+})
+
+    )
+
+  }
+
+
+)  
+)
+
+
+}
+
+
+deletephot(photoid :number){
+ return this.http.delete(this.url+'user/delete-photo/'+ photoid)
+}
+
+}

@@ -1,0 +1,82 @@
+<div class="row">
+
+@for ( photo of member().photos; track photo.id){
+
+<div class="col-2">
+    
+
+    <img src="{{photo.url}}" alt="photo of the user " class="img-thumbnail mb-1">
+
+
+    <div class="text-center">
+        <button class="btn btn-sm" (click)="SetmainPhoto(photo)"
+        [disabled]="photo.isMain"
+        >Main</button>
+
+                <button class="btn btn-danger btn-sm"
+                [disabled]="photo.isMain"
+                
+                (click)="deletephoto(photo.id)"
+                ><i class="fa fa-trash"> Delete </i></button>
+
+
+    </div>
+</div>
+
+
+    }
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<!-- for the file upload  -->
+
+<!-- 
+<div
+  class="file-upload-wrapper"
+  [class.success]="uploadSuccess"
+  [class.error]="uploadError"
+  (drop)="onFileDrop($event)"
+  (dragover)="onDragOver($event)"
+>
+  <input
+    type="file"
+    accept="image/*"
+    (change)="onFileChange($event)"
+    hidden
+    #fileInput
+  />
+  
+   -->
+  <!-- <div class="file-dropper" (click)="fileInput.click()">
+    <mat-icon>upload</mat-icon>
+    <p>{{ "ACTIONS.UPLOAD_PLACEHOLDER" | translate }}</p>
+    <div *ngIf="imageName()">
+      <div *ngIf="selectedFile || imagePreview">
+        <img
+          [src]="imagePreview()"
+          alt="Image Preview"
+          class="image-preview"
+        />
+        <p>
+          <span class="image-name">{{ imageName() }}</span> ({{
+            fileSize()
+          }} KB)
+        </p>
+        <mat-icon class="delete-icon" (click)="removeImage()">delete</mat-icon>
+      </div>
+    </div>
+  </div> -->
+<!-- </div> -->
+
+

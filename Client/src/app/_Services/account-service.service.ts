@@ -41,8 +41,7 @@ constructor() {
     return this.http.post<User>(this.basuerl+"Account/login",model).pipe(
       map(user=>{
         if(user){
-      localStorage.setItem('user',JSON.stringify(user));
-      this.currentuser.set(user);
+          this.setcurrentuser(user);
 
         }
       })
@@ -57,8 +56,8 @@ constructor() {
     return this.http.post<User>(this.basuerl+"Account/register",model).pipe(
       map(user=>{
         if(user){
-      localStorage.setItem('user',JSON.stringify(user));
-      this.currentuser.set(user);
+     
+          this.setcurrentuser(user);
         }
      return user;
       }
@@ -73,6 +72,15 @@ logout(){
 
 localStorage.removeItem('user');
 this.currentuser.set(null);
+
+
+}
+
+
+setcurrentuser(user:User){
+
+localStorage.setItem('user',JSON.stringify(user));
+      this.currentuser.set(user);
 
 
 }

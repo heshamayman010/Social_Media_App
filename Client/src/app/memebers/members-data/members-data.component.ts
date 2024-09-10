@@ -37,7 +37,7 @@ this.loaduserdata();
   
       next:mem=>
       {        this.member=mem;
-        mem.Photos.map(x=>
+        mem.photos.map(x=>
 {
           this.Images.push(new ImageItem({src: x.url,thumb:x.url}))
 

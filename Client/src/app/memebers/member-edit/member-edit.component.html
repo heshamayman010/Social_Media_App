@@ -128,14 +128,11 @@ class="card-img img-thumbnail"
 
 
               <tab heading="Edit Photos ">
-                    <h4>
-                    Editing Photos will be here 
-                    </h4>
-                    <p>
-                    {{member.interstes}}
-                    </p>
 
-                </tab>
+                <app-photo-editor [member]="member"  (memberchange)="member" ></app-photo-editor>
+
+                <!-- (anothermemberchange)=" member" -->
+            </tab> 
             </tabset>
 
         </div>

@@ -45,7 +45,7 @@ return Ok();
 [HttpPost("login")]
 public async Task<ActionResult<UserDto>> Login(LoginDto dto){
 
-var user=await context.appUsers.FirstOrDefaultAsync(x=>x.UserName==dto.username);
+var user=await context.appUsers.Include(c=>c.Photos).FirstOrDefaultAsync(x=>x.UserName==dto.username);
 if(user==null)return Unauthorized("invalid username");
 // here when defining the hamc object we use the password salt from the user data to correctly check for the password 
 using var hm=new HMACSHA512(user.PasswordSalt);
@@ -63,7 +63,8 @@ if(ComputeHash[i]!=user.PasswordHash[i]) return Unauthorized("Incorrect password
 return new UserDto(){
 
     UserName=user.UserName,
-    Token=service.CreateToken(user)
+    Token=service.CreateToken(user),
+    photpUrl=user.Photos.FirstOrDefault(x=>x.IsMain)?.Url
 };
 
 }
@@ -71,8 +72,6 @@ return new UserDto(){
 private async Task<bool> uniquname(string username){
 
 return await context.appUsers.AnyAsync(x=>x.UserName.ToLower()==username.ToLower());
-
-
 }
 
     }

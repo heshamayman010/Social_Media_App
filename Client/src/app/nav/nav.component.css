@@ -3,3 +3,13 @@
     cursor: pointer;
     
 }
+
+
+img {
+
+
+    max-height: 50px;
+
+    border: 2px solid rgb(58, 42, 42);
+    display: inline;
+}
