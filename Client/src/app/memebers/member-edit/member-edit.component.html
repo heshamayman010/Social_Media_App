@@ -47,13 +47,17 @@ class="card-img img-thumbnail"
             <div class="card-body">
                 <strong> LastActive  </strong>
 
-                    <p> {{member.lAstActiv}} </p>
+                    <p> {{member.lAstActiv|date:'short'}} </p>
             </div>
 
             <div class="card-body">
                 <strong> Member Since  </strong>
 
-                    <p> {{member.created}} </p>
+                    <p> {{member.created|date:'short'}} </p>
+
+
+
+                    
             </div>
 
 

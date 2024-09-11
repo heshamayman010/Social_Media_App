@@ -29,7 +29,8 @@ var Key=new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenkey));
 // and create the claims that will be stored
 var claims=new List<Claim>(){
 
-new(ClaimTypes.NameIdentifier,user.UserName)
+new(ClaimTypes.NameIdentifier,user.Id.ToString()),
+new(ClaimTypes.Name,user.UserName)
 };
 var credintials=new SigningCredentials(Key,SecurityAlgorithms.HmacSha512Signature);
 

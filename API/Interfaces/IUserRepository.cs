@@ -1,6 +1,7 @@
 using System;
 using API.Dtos;
 using API.Entities;
+using API.Helpers;
 
 namespace API.Interfaces;
 
@@ -9,10 +10,10 @@ public interface IUserRepository
 void Update(AppUser user);
 Task<bool>SaveAllAsync();
 
-Task<AppUser?>GetUserByIdAsync(int id);
+// Task<AppUser?>GetUserByIdAsync(int id);
 
-Task<IEnumerable<AppUser>>GetAllUserAsync();
-
+// Task<PageList<AppUser>>GetAllUserAsync(UserParameters userParameters);
+  Task<AppUser?> GetUserById(int id );
 
 Task <AppUser?> GetUserByUserNameAsync(string username);
 
@@ -22,7 +23,7 @@ Task <AppUser?> GetUserByUserNameAsync(string username);
 
 Task<MemberDto?>GetMemberDtoByIdAsync(int id);
 
-Task<IEnumerable<MemberDto>>GetAllMemebersDtoAsync();
+Task<PageList<MemberDto>>GetAllMemebersDtoAsync(UserParameters parameters);
 
 
 Task <MemberDto?> GetMemberDtoByNameAsync(string username);

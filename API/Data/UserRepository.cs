@@ -1,6 +1,7 @@
 using System;
 using API.Dtos;
 using API.Entities;
+using API.Helpers;
 using API.Interfaces;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
@@ -10,20 +11,23 @@ namespace API.Data;
 
 public class UserRepository(AppDbContext context ,IMapper mapper) : IUserRepository
 {
-    public async Task<IEnumerable<MemberDto>> GetAllMemebersDtoAsync()   // old
+    public async Task<PageList<MemberDto>> GetAllMemebersDtoAsync(UserParameters parameters) 
     {
-        // here we created querable to call only the important props from the data base
-        var memberstoreturn= await context.appUsers.ProjectTo<MemberDto>(mapper.ConfigurationProvider).ToListAsync();
+        // here we created querable to call only the important props from the data base 
+        var query=  context.appUsers.AsQueryable();
 
-        return memberstoreturn;
+// query=        parameters.OrderBy switch 
+//         {
+//             "created" =>query.OrderByDescending(x=>x.Created),
+//             _ =>query.OrderByDescending(x=>x.LAstActiv)
+//         };
 
+        query=query.Where(x=>x.UserName!=parameters.currenusername);
+        return await PageList<MemberDto>.CreateAsync(query.ProjectTo<MemberDto>(mapper.ConfigurationProvider),parameters.pagenumber,parameters.pagesize);
+
+       
     }
 
-    public async Task<IEnumerable<AppUser>> GetAllUserAsync()
-    {
-            var allusers=context.appUsers.Include(x=>x.Photos).ToListAsync();
-            return await allusers;
-    }
 
     public async Task<MemberDto?> GetMemberDtoByIdAsync(int id)
     {
@@ -39,14 +43,16 @@ public class UserRepository(AppDbContext context ,IMapper mapper) : IUserReposit
         return memberstoreturn;
     }
 
-    public async Task<AppUser?> GetUserByIdAsync(int id)//old
-    {
-        return await context.appUsers.Include(x=>x.Photos).FirstOrDefaultAsync(x=>x.Id==id);
-    }
 
     public async Task<AppUser?> GetUserByUserNameAsync(string username)//old
     {
         return await context.appUsers.Include(x=>x.Photos).FirstOrDefaultAsync(x=>x.UserName==username);
+    }
+
+
+    public async Task<AppUser?> GetUserById(int id )//old
+    {
+        return await context.appUsers.Include(x=>x.Photos).FirstOrDefaultAsync(x=>x.Id==id);
     }
 
     public async Task<bool> SaveAllAsync()

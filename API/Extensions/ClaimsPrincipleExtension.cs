@@ -12,11 +12,25 @@ public static string GetUsername(this ClaimsPrincipal user)
 
 {
 
-var username=user.FindFirstValue(ClaimTypes.NameIdentifier);
+var username=user.FindFirstValue(ClaimTypes.Name);
 if(username==null) throw new Exception("the token contains no user name ");
 
 return username;
 
 
 }
+
+public static int GetUserid(this ClaimsPrincipal user)
+
+{
+
+var id=int.Parse(user.FindFirstValue(ClaimTypes.NameIdentifier)??throw new Exception("use id is null "));
+
+
+return id;
+
+
+}
+
+
 }

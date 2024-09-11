@@ -26,7 +26,7 @@ services.AddCors();
 services.AddScoped<ITokenService,TokenService>();
 services.AddScoped<IUserRepository,UserRepository>();
 services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies() ); // here we give it the place of the 
-
+services.AddScoped<LogUserActivity>();
 
 services.AddScoped<IPhotoService,PhotoService>();
 // here we use the config with the place where it will get the configuration data 

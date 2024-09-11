@@ -65,6 +65,7 @@ return new UserDto(){
     ,knownas=user.KnownAs
 };
 
+
 }
 // method only used to check if the user name already exists in the database 
 private async Task<bool> uniquname(string username){

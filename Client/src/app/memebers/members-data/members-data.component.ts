@@ -5,12 +5,13 @@ import { Member } from '../../_models/Member';
 import { TabsModule } from 'ngx-bootstrap/tabs';
 import { GalleryItem, GalleryModule, ImageItem } from 'ng-gallery';
 import { map } from 'rxjs';
+import { DatePipe } from '@angular/common';
 
 
 @Component({
   selector: 'app-members-data',
   standalone: true,
-  imports: [TabsModule,GalleryModule],
+  imports: [TabsModule,GalleryModule,DatePipe],
   templateUrl: './members-data.component.html',
   styleUrl: './members-data.component.css'
 })

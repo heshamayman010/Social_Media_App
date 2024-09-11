@@ -62,21 +62,21 @@ this.memberchange.emit(updatedmember)
 
 deletephoto(photoid:number){
 
-this.memberservice.deletephot(photoid).subscribe({
-next:_nothing=>{
-  const updatedmember={...this.member()};
-  updatedmember.photos=updatedmember.photos.filter(x=>x.id!==photoid);
+// this.memberservice.deletephot(photoid).subscribe({
+// next:_nothing=>{
+//   const updatedmember={...this.member()};
+//   updatedmember.photos=updatedmember.photos.filter(x=>x.id!==photoid);
   
-  this.memberchange.emit(updatedmember);
+//   this.memberchange.emit(updatedmember);
 
 window.location.reload();
 }
 
-})
+}
   
-}
+// }
 
-}
+// }
 
 
 

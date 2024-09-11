@@ -8,6 +8,7 @@ using AutoMapper;
 using API.Dtos;
 using System.Security.Claims;
 using API.Extensions;
+using API.Helpers;
 
 namespace API.Controllers
 {
@@ -15,12 +16,14 @@ namespace API.Controllers
     {
 [Authorize]
     [HttpGet]
-    public async Task<IActionResult> Getusers(){
+    public async Task<IActionResult> Getusers([FromQuery]UserParameters parameters){
 
-      //   var users= await userrepo.GetAllUserAsync();
+        // now we want also to send the user naem of the current user with the params 
+        parameters.currenusername=User.GetUsername();
 
       //   var userstoreturn=mapper.Map<IEnumerable<MemberDto>>(users); // the old way 
-     var  userstoreturn=await userrepo.GetAllMemebersDtoAsync();
+     var  userstoreturn=await userrepo.GetAllMemebersDtoAsync(parameters);
+     Response.AddPaginationHeader(userstoreturn);
         return Ok(userstoreturn);
 
     }

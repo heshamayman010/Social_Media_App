@@ -2,7 +2,7 @@
 <div class="row">
 
 
-        @for (item of memberservice.members() ; track $index) {
+        @for (item of memberservice.paginatedresult()?.items ; track $index) {
 
     <div class="col-3">
 
@@ -14,4 +14,24 @@
 
 
 </div>
+
+@if (memberservice.paginatedresult()?.pagination) {
+<div class="justify-content-center d-flex">
+<pagination [boundaryLinks]="true" 
+[totalItems]="100"
+            previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"
+            
+            [itemsPerPage]="memberservice.paginatedresult()?.pagination!.itemsperpage"   
+            [maxSize]="3"
+            (pageChanged)="changepage($event)"
+            >
+ 
+</pagination>
+
+
+</div>
+
+
+}
+
 
