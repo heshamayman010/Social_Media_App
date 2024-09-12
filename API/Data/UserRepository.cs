@@ -67,4 +67,14 @@ public class UserRepository(AppDbContext context ,IMapper mapper) : IUserReposit
 
         context.Entry(user).State=EntityState.Modified;
     }
+
+
+// public string Getusernamebyitsid(int id ){
+
+// var myusr=context.appUsers.FirstOrDefault(x=>x.Id==id) ;
+//     return myusr.UserName;
+
+// }
+
+
 }

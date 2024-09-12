@@ -2,14 +2,15 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, model, signal } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { User } from '../_models/user';
+import { LikesService } from './likes.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AccountServiceService {
 
-  // instead of using the constructor to inject any thing we can only use the inject
-  // constructor(private http:HttpClient) { }
+// here we will use the like service to make the get all likes function works after the login 
+mylikeservice=inject(LikesService);
 
 // to create signal 
  currentuser=signal<User|null>(null);
@@ -42,11 +43,8 @@ constructor() {
       map(user=>{
         if(user){
           this.setcurrentuser(user);
-
         }
       })
-
-
     )
   }
 
@@ -61,11 +59,8 @@ constructor() {
      return user;
       }
     )
-
-
     )
   }
-
 
 logout(){
 
@@ -80,6 +75,7 @@ setcurrentuser(user:User){
 
 localStorage.setItem('user',JSON.stringify(user));
       this.currentuser.set(user);
+      this.mylikeservice.getlikeIds();
 
 
 }

@@ -1,1 +1,48 @@
-<p>lists works!</p>
+<div
+class="text-center">
+<h3> {{gettitle()}}</h3>
+</div>
+
+
+<div class="container mt-3">
+    <div class="d-flex">
+        <div class="btn-group">
+            <button class="btn-primary btn"
+            btnRadio="liked"
+                [(ngModel)]="predicate"
+                (click)="loadLiked()">
+Members I Like 
+            </button>
+                        <button class="btn-primary btn"
+            btnRadio="likedBy"
+            value="likedBy"
+                [(ngModel)]="predicate"
+                (click)="loadLiked()"
+            >
+Members Who Liked Me 
+            </button>
+
+            <button class="btn-primary btn"
+            btnRadio="mutual"
+                [(ngModel)]="predicate"
+                (click)="loadLiked()"
+            >
+     All  
+            </button>
+
+        </div>
+
+    </div>
+<!-- then here we show the members -->
+
+
+<div class="row mt-4">
+@for (member of member; track member.id) {
+
+    <div class="col-2">
+
+        <app-memeber-card [usertoshow]="member "></app-memeber-card>
+    </div>
+}
+
+</div>

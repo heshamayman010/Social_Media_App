@@ -32,6 +32,10 @@ public List<Photo> Photos{get;set;}=[];
 
 
 
+// here is the part of the like functionality 
+public List<LikeUser>LikedbyUsers { get; set; }=[];
+
+ public List<LikeUser>LikedUsers { get; set; }=[];
 
 
 public int GetAge(){

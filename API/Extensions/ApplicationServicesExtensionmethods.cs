@@ -24,6 +24,7 @@ options.UseSqlite(config.GetConnectionString("Defaultconnectionstring"));
 });
 services.AddCors();
 services.AddScoped<ITokenService,TokenService>();
+services.AddScoped<ILikeRepository,LikeRepository>();
 services.AddScoped<IUserRepository,UserRepository>();
 services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies() ); // here we give it the place of the 
 services.AddScoped<LogUserActivity>();

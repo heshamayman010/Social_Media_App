@@ -3,6 +3,7 @@ import { RouterOutlet } from '@angular/router';
 import { NgFor } from '@angular/common';
 import { NavComponent } from "./nav/nav.component";
 import { HomeComponent } from "./home/home.component";
+import { AccountServiceService } from './_Services/account-service.service';
 
 @Component({
   selector: 'app-root',
@@ -13,11 +14,23 @@ import { HomeComponent } from "./home/home.component";
 })
 export class AppComponent implements OnInit {
   title = 'Client';
+  myaccountservice=inject(AccountServiceService)
   ngOnInit(): void {
+  this.setCurrentUser()
+  }
 
-   
+
+  setCurrentUser() {
+
+    const userstring=localStorage.getItem('user');
+    if(!userstring) return;
+    const user=JSON.parse(userstring);
+    this.myaccountservice.setcurrentuser(user);
+
 
   }
+
+
 
 
 

@@ -6,7 +6,7 @@ public class MemberDto
 {
 
 
-    
+public int id { get; set; }    
 public  string? UserName { get; set; }
 
 public int Age {set;get;}
