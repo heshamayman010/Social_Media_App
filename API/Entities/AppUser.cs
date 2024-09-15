@@ -1,17 +1,13 @@
 using System;
 using API.Extensions;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Entities;
 
-public class AppUser
+public class AppUser:IdentityUser<int>
 {
 
-    public int Id { get; set; }
-public required string UserName { get; set; }
-public  byte[] PasswordHash { get; set; }=[];
-// this password salt is used to add custom value to the passwords so that after hashing the same passwords will have different hashes
-public  byte[] PasswordSalt { get; set; }=[] ;
 
 public DateOnly DateOfBirth { get; set; }
 
@@ -44,6 +40,9 @@ public List<Messages> MessagesSent{set;get;}=[];
 public List<Messages> MessagesReceived{set;get;}=[];
 
 
+// and for the .net identity
+
+public ICollection<AppUserRole> UserRoles{set;get;}=[];
 
 
 

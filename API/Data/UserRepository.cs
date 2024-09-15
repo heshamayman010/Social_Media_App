@@ -14,7 +14,7 @@ public class UserRepository(AppDbContext context ,IMapper mapper) : IUserReposit
     public async Task<PageList<MemberDto>> GetAllMemebersDtoAsync(UserParameters parameters) 
     {
         // here we created querable to call only the important props from the data base 
-        var query=  context.appUsers.AsQueryable();
+        var query=  context.Users.AsQueryable();
 
 // query=        parameters.OrderBy switch 
 //         {
@@ -31,14 +31,14 @@ public class UserRepository(AppDbContext context ,IMapper mapper) : IUserReposit
 
     public async Task<MemberDto?> GetMemberDtoByIdAsync(int id)
     {
-        var memberstoreturn= await context.appUsers.Where(x=>x.Id==id).ProjectTo<MemberDto>(mapper.ConfigurationProvider).SingleOrDefaultAsync();
+        var memberstoreturn= await context.Users.Where(x=>x.Id==id).ProjectTo<MemberDto>(mapper.ConfigurationProvider).SingleOrDefaultAsync();
 
         return memberstoreturn;
     }
 
     public async Task<MemberDto?> GetMemberDtoByNameAsync(string username)
     {
-        var memberstoreturn= await context.appUsers.Where(x=>x.UserName==username).ProjectTo<MemberDto>(mapper.ConfigurationProvider).SingleOrDefaultAsync();
+        var memberstoreturn= await context.Users.Where(x=>x.UserName==username).ProjectTo<MemberDto>(mapper.ConfigurationProvider).SingleOrDefaultAsync();
 
         return memberstoreturn;
     }
@@ -46,13 +46,13 @@ public class UserRepository(AppDbContext context ,IMapper mapper) : IUserReposit
 
     public async Task<AppUser?> GetUserByUserNameAsync(string username)//old
     {
-        return await context.appUsers.Include(x=>x.Photos).FirstOrDefaultAsync(x=>x.UserName==username);
+        return await context.Users.Include(x=>x.Photos).FirstOrDefaultAsync(x=>x.UserName==username);
     }
 
 
     public async Task<AppUser?> GetUserById(int id )//old
     {
-        return await context.appUsers.Include(x=>x.Photos).FirstOrDefaultAsync(x=>x.Id==id);
+        return await context.Users.Include(x=>x.Photos).FirstOrDefaultAsync(x=>x.Id==id);
     }
 
     public async Task<bool> SaveAllAsync()

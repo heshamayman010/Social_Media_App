@@ -10,6 +10,7 @@ using Microsoft.IdentityModel.Tokens;
 using API.Extensions;
 using API.Middlewares;
 using API.Data;
+using Microsoft.AspNetCore.Identity;
 var builder = WebApplication.CreateBuilder(args);
 
 // the next service is instead of the add cors and controllers and also for the adddbcontext 
@@ -33,8 +34,10 @@ var services=scope.ServiceProvider;
 try
 {
     var context=services.GetRequiredService<AppDbContext>();
+    var usermanger=services.GetRequiredService<UserManager<AppUser>>();
+    var roleManager=services.GetRequiredService<RoleManager<AppRole>>();
     await context.Database.MigrateAsync();
-    await Seed.SeedUsers(context);
+    await Seed.SeedUsers(usermanger,roleManager);
 }
 catch (Exception ex )
 {

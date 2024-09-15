@@ -7,12 +7,13 @@ using API.interfaces;
 using API.Services;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace API.Controllers
 {
-    public class AccountController (AppDbContext context,ITokenService service,IMapper mapper): BaseApiController
+    public class AccountController (UserManager<AppUser>userManager,ITokenService service,IMapper mapper): BaseApiController
     {
 
         [HttpPost("register")]
@@ -20,19 +21,15 @@ public async Task <ActionResult<UserDto>> Register(RegisterDto dto)
 {
 
     if(await uniquname(dto.username)) return BadRequest("this user name is already taken choose another one");
-   
-    
-    using var hm =new HMACSHA512();
-
 var user=mapper.Map<AppUser>(dto);
-user.UserName=dto.username;
-user.PasswordHash=hm.ComputeHash(Encoding.UTF8.GetBytes(dto.password));
-user.PasswordSalt=hm.Key;
-context.appUsers.Add(user);
-await context.SaveChangesAsync();
+user.UserName=dto.username.ToLower();
+var result=await userManager.CreateAsync(user,dto.password);
+
+if(!result.Succeeded) return BadRequest(result.Errors);
+
 return new UserDto(){
 UserName=user.UserName,
-Token=service.CreateToken(user)
+Token= await service.CreateToken(user)
 ,knownas=user.KnownAs
 };
     }
@@ -42,35 +39,31 @@ Token=service.CreateToken(user)
 [HttpPost("login")]
 public async Task<ActionResult<UserDto>> Login(LoginDto dto){
 
-var user=await context.appUsers.Include(c=>c.Photos).FirstOrDefaultAsync(x=>x.UserName==dto.username);
-if(user==null)return Unauthorized("invalid username");
-// here when defining the hamc object we use the password salt from the user data to correctly check for the password 
-using var hm=new HMACSHA512(user.PasswordSalt);
+var user=await userManager.Users.
+Include(c=>c.Photos).
+FirstOrDefaultAsync(x=>x.NormalizedUserName==dto.username.ToUpper());  // here the normalized user name return all the chars in capital case
 
-var ComputeHash= hm.ComputeHash(Encoding.UTF8.GetBytes(dto.password));
 
-// then we will do for loop for checking for the equality of the new hash and the user passwrod hash
+if(user==null||user.UserName==null)return Unauthorized("invalid username");
 
-for(int i =0;i<ComputeHash.Length;i++){
+// now to check for hte password 
+var passwordcorrect=await userManager.CheckPasswordAsync(user,dto.password);
 
-if(ComputeHash[i]!=user.PasswordHash[i]) return Unauthorized("Incorrect password try again later ");
-}
+if(!passwordcorrect) return BadRequest("the password you enterd is not correct");
 
-// now we will return the user dto instead of returning the user      
 return new UserDto(){
 
     UserName=user.UserName,
-    Token=service.CreateToken(user),
+    Token=await service.CreateToken(user),
     photpUrl=user.Photos.FirstOrDefault(x=>x.IsMain)?.Url
     ,knownas=user.KnownAs
 };
-
 
 }
 // method only used to check if the user name already exists in the database 
 private async Task<bool> uniquname(string username){
 
-return await context.appUsers.AnyAsync(x=>x.UserName.ToLower()==username.ToLower());
+return await userManager.Users.AnyAsync(x=>x.NormalizedUserName==username.ToUpper());
 }
 
     }

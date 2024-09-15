@@ -9,16 +9,14 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace API.Services;
 
-public class TokenService (IConfiguration config) : ITokenService
+public class TokenService (IConfiguration config,UserManager<AppUser>userManager) : ITokenService
 {
-    public string CreateToken(AppUser user)
+    public async Task<string> CreateToken(AppUser user)
     {
 
 // this is the key that will be used in the jwt
 var tokenkey=config["TokenKey"]??throw new Exception("cant access the token key");
-
 // and make check for the token key length 
-
 if(tokenkey.Length<64) throw new Exception("the token key must be longer than that");
 
 // and now lets create the token 
@@ -32,6 +30,13 @@ var claims=new List<Claim>(){
 new(ClaimTypes.NameIdentifier,user.Id.ToString()),
 new(ClaimTypes.Name,user.UserName)
 };
+// for the part of the role usignt the rolemanger and usermanger 
+
+var roles=await userManager.GetRolesAsync(user);
+// then add the role to claims 
+
+claims.AddRange(roles.Select(role=>new Claim(ClaimTypes.Role,role)));
+
 var credintials=new SigningCredentials(Key,SecurityAlgorithms.HmacSha512Signature);
 
 // then we will create the descriptor for our token
