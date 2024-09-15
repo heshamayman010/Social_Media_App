@@ -1,0 +1,65 @@
+<div class="card">
+
+    <div class="card-body">
+@if(messages.length==0){ 
+    <p> There Is No Messages Yet </p>
+}@else {
+
+    <ul class="chat">
+ @for (message of messages; track message.id) {
+
+<li class="">
+    <div>
+
+<span class="chat-img float-end">
+
+<img class="rounded-circle" src="{{message.senderPhotoUrl}}">
+</span>
+<div class="chat-body">
+<div class=" header">
+<small class="text-muted">
+<span class="fa fa-clock-o">{{message.messageSent}} </span>
+</small>
+</div>
+<div class=" text-success">
+<p> {{message.content}}</p>
+</div>
+</div>
+
+    </div>
+</li>
+}
+
+    </ul>
+
+}
+    </div>
+
+<div class="card-footer">
+<form #messageform="ngForm" (ngSubmit)="sendmessage()">
+     <div class="input-group ">
+<input class="form-control input-lg" placeholder="send Private Message"
+name="messagecontent"
+[(ngModel)]="messagecontent"
+required
+>
+
+     <div class=" rounded align-content-center">
+<button class="btn btn-success float-md-end" type="submit"
+[disabled]="!messageform.valid">
+SEND
+</button>
+
+     </div>
+
+
+     </div>
+
+</form>
+</div>
+
+
+</div>
+
+
+

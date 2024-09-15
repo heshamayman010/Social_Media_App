@@ -1,1 +1,79 @@
-<p>messages works!</p>
+<div class="container mt-3">
+
+<div class="d-flex">
+
+    <div class="btn-group">
+
+        <button class="btn btn-primary" [(ngModel)]="container" btnRadio="UnRead" (click)=" loaddata()">
+                UnRead
+        </button>
+
+
+       <button class="btn btn-primary" btnRadio="InBox"   [(ngModel)]="container" (click)=" loaddata()">
+                InBox
+        </button>
+        <button class="btn btn-primary" btnRadio="OutBox"   [(ngModel)]="container" (click)=" loaddata()">
+                OutBox
+        </button>
+    </div>
+</div>
+</div>
+
+@if (!messageservice.returneddata()?.items) {
+
+<h4> There Is No Messages</h4>
+
+}
+
+
+<!-- and here we will display the data of the users  -->
+
+
+<table class="table table-hover " style="cursor: pointer;">
+    <thead>
+        <tr>
+            <th style="width: 40%;">Messages </th>
+            <th style="width: 20%;">From / To  </th>
+            <th style="width: 20%;">Sent / Recieved </th>
+            <th style="width: 20%;">Delete </th>
+
+
+        </tr>
+    </thead>
+
+<tbody class="align-middle">
+    
+@for (item of messageservice.returneddata()?.items; track item.id) {
+
+    <tr  >
+
+    <td routerLink="{{getroute(item)}}">{{item.content}}</td>
+    <td routerLink="{{getroute(item)}}">
+
+<div >
+<img [src]="container ==='OutBox'? (item.recipientPhotoUrl ):(item.senderPhotoUrl)  "
+
+class="rounded-circle me-2"
+>
+
+<strong > {{container==="OutBox" ?item.recipientUserName:item.senderUserName }} </strong>
+</div >
+    </td>
+    <td routerLink="{{getroute(item)}}"> {{item.messageSent}}</td>
+
+<td > <button class="btn btn-danger" (click)="deletemessage(item.id)" >Delete </button></td>
+    </tr>
+}
+
+
+</tbody>
+
+
+
+</table>
+
+
+
+
+
+

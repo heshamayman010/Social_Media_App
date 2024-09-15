@@ -58,7 +58,7 @@ class="card-img img-thumbnail"
 
 
         <div class="col-7">
-            <tabset class="member-tabs">
+            <tabset class="member-tabs" #membertabs>
 <br>
                 <tab heading="Info About {{member.knownAs}}">
                     <h4>
@@ -84,7 +84,7 @@ class="card-img img-thumbnail"
                     Messages 
                     </h4>
                     <p>
-                   messages will be here 
+                        <app-member-messages [username]="member.userName" ></app-member-messages>
                     </p>
 
                 </tab>

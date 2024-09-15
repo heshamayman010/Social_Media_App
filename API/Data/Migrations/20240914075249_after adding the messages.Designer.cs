@@ -3,6 +3,7 @@ using System;
 using API.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240914075249_after adding the messages")]
+    partial class afteraddingthemessages
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.8");
@@ -99,13 +102,13 @@ namespace API.Data.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime?>("DateReadd")
+                    b.Property<DateTime>("DateReadd")
                         .HasColumnType("TEXT");
 
-                    b.Property<DateTime?>("MessageSent")
+                    b.Property<DateTime>("MessageSent")
                         .HasColumnType("TEXT");
 
-                    b.Property<bool?>("RecipientDeleteted")
+                    b.Property<bool>("RecipientDeleteted")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("RecipientId")
@@ -115,7 +118,7 @@ namespace API.Data.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<bool?>("SenderDeleteted")
+                    b.Property<bool>("SenderDeleteted")
                         .HasColumnType("INTEGER");
 
                     b.Property<int>("SenderId")

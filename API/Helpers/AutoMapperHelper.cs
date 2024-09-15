@@ -23,7 +23,10 @@ public class AutoMapperHelper:Profile
         // the next one is to configure the change from the string to date only 
 
         CreateMap<string ,DateOnly>().ConstructUsing(x=>DateOnly.Parse(x));
-    
+        CreateMap <Messages,MessagesDto>().
+        ForMember(x=>x.SenderPhotoUrl,o=>o.MapFrom(x=>x.Sender.Photos.FirstOrDefault(x=>x.IsMain)!.Url))
+        .   ForMember(x=>x.RecipientPhotoUrl,o=>o.MapFrom(x=>x.Recipient.Photos.FirstOrDefault(x=>x.IsMain)!.Url));
+
     }
 
 }

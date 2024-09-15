@@ -15,6 +15,8 @@ public class AppDbContext:DbContext
 
     public DbSet<AppUser>appUsers{get;set;}
     public DbSet<LikeUser>Likes{set;get;}
+
+    public DbSet<Messages> messages{set;get;}
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         base.OnConfiguring(optionsBuilder);
@@ -35,7 +37,15 @@ public class AppDbContext:DbContext
                 HasOne(x=>x.TargetUser).WithMany(x=>x.LikedbyUsers)
                 .HasForeignKey(c=>c.TargetUserId).OnDelete(DeleteBehavior.Cascade);
 
+// and here is the configuration for the messages  and we will apply the soft delete 
 
+    model.Entity<Messages>().HasOne(x=>x.Recipient)
+    .WithMany(x=>x.MessagesReceived)
+    .OnDelete(DeleteBehavior.Restrict);
+
+    model.Entity<Messages>().HasOne(x=>x.Sender)
+    .WithMany(x=>x.MessagesSent)
+    .OnDelete(DeleteBehavior.Restrict);
     }
 
 
