@@ -8,6 +8,7 @@ import { map } from 'rxjs';
 import { DatePipe } from '@angular/common';
 import { MemberMessagesComponent } from "../member-messages/member-messages.component";
 import { messages } from '../../_models/messages';
+import { PresencehubService } from '../../_Services/presencehub.service';
 
 
 @Component({
@@ -21,6 +22,8 @@ import { messages } from '../../_models/messages';
 // this class to show the data of specifec user
 export class MembersDataComponent implements OnInit {
 // Images:GalleryItem[]=[];
+
+myhubservice=inject(PresencehubService);
   private service=inject(MebmerServiceService);
 member?:Member
 // and this activate repute will be used to take the snapshots and give back the dat we want 

@@ -3,6 +3,7 @@ import { Member } from '../../_models/Member';
 import { RouterLink } from '@angular/router';
 import { LikesService } from '../../_Services/likes.service';
 import { MebmerServiceService } from '../../_Services/mebmer-service.service';
+import { PresencehubService } from '../../_Services/presencehub.service';
 
 @Component({
   selector: 'app-memeber-card',
@@ -17,6 +18,14 @@ export class MemeberCardComponent {
 mylikeservice=inject(LikesService);
 usertoshow=input.required<Member>();
 mymemberservice=inject(MebmerServiceService)
+
+myhubservice=inject(PresencehubService);
+Isonline=computed(()=>
+{
+ return this.myhubservice.onlineusers().includes(this.usertoshow().userName) // this function will return boolean 
+})
+
+
 // computed is signal that is used when you want to work with another signals datat and it takes function 
 //as parameter 
 hasLiked=computed(
@@ -43,3 +52,8 @@ else{
 
 }
 }
+
+
+
+
+

@@ -11,6 +11,7 @@ using API.Extensions;
 using API.Middlewares;
 using API.Data;
 using Microsoft.AspNetCore.Identity;
+using API.TheSignalR;
 var builder = WebApplication.CreateBuilder(args);
 
 // the next service is instead of the add cors and controllers and also for the adddbcontext 
@@ -21,10 +22,15 @@ builder.Services.AddIdentityService(builder.Configuration);
 var app = builder.Build();
 app.UseHttpsRedirection();
 app.UseMiddleware<ExceptionHandlerMiddleware>();
-app.UseCors(x=>x.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:4200","https://localhost:4200"));
+app.UseCors(x=>x.AllowAnyHeader().AllowCredentials().AllowAnyMethod().WithOrigins("http://localhost:4200","https://localhost:4200"));
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+app.MapHub<PresenceHub>("hubs/presence");
+app.MapHub<MessagesHub>("hubs/messages");
+
+
+
 
 
 // this part is only used when adding the seed data 

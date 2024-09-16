@@ -16,10 +16,10 @@ public static IServiceCollection AddIdentityService(this IServiceCollection serv
 service.AddIdentityCore<AppUser>(o=>{
 // options for the identity
 o.Password.RequireNonAlphanumeric=false;
-
-
 }).AddRoles<AppRole>().AddRoleManager<RoleManager<AppRole>>()
 .AddEntityFrameworkStores<AppDbContext>();
+
+
 
 service.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options=>
 {var tokenkey=config["TokenKey"]??throw new Exception("the token key must be found");
@@ -31,6 +31,22 @@ options.TokenValidationParameters=new TokenValidationParameters{
     ValidateIssuer=false
 };
 
+// this part is used for the signal r 
+
+options.Events=new JwtBearerEvents{
+
+    OnMessageReceived= context=>{
+
+        var accessToken=context.Request.Query["access_token"];
+        var path=context.HttpContext.Request.Path;
+
+        if(!string.IsNullOrEmpty(accessToken)&&path.StartsWithSegments("/hubs")){
+
+            context.Token=accessToken;
+        }
+        return Task.CompletedTask;
+    }
+};
 });
 
     return service;

@@ -3,6 +3,8 @@ import { environment } from '../../environments/environment.development';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { messages } from '../_models/messages';
 import { PaginatedResult } from '../_models/Pagination';
+import { HubConnection, HubConnectionBuilder, HubConnectionState } from '@microsoft/signalr';
+import { User } from '../_models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -10,10 +12,41 @@ import { PaginatedResult } from '../_models/Pagination';
 export class MessagesService {
 
 baseurl=environment.ApiUrl
-
+hubsUrl=environment.hubsUrl;
+private hubconnection?:HubConnection;
 http=inject(HttpClient);
+messagesThread=signal<messages[]>([]);
 
 returneddata=signal<PaginatedResult<messages[]>|null>(null);
+
+// this part is for the hub connections send messages
+CreateHubConnection(user:User,otherusername:string){
+this.hubconnection=new HubConnectionBuilder().withUrl(this.hubsUrl+"messages?user="+otherusername,{
+
+  accessTokenFactory:()=>user.token  // this comes from the user we pass as the parameter 
+})
+.withAutomaticReconnect()
+.build()
+
+// then start the connection
+this.hubconnection.start().catch(err=>console.log(err));
+
+
+this.hubconnection.on("RecieveMessage",messages=>{
+  this.messagesThread.set(messages);
+
+
+})
+}
+
+StopConnection(){
+if(this.hubconnection?.state===HubConnectionState.Connected){
+  this.hubconnection.stop().catch(err=>console.log(err));
+}
+
+}
+
+
 
 
 

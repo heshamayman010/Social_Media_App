@@ -14,6 +14,15 @@ class="card-img img-thumbnail"
 
 
             <div class="card-body">
+
+@if (myhubservice.onlineusers().includes(member.userName)) {
+                <div class="mb-2">
+
+                    <i class="fa fa-user-circle text-success"></i> Online
+
+                </div>
+
+}
                 <strong> Location  </strong>
 
                     <p> {{member.city}} ...  {{member.country}}</p>

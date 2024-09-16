@@ -3,6 +3,7 @@ import { inject, Injectable, model, signal } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { User } from '../_models/user';
 import { LikesService } from './likes.service';
+import { PresencehubService } from './presencehub.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,6 +13,7 @@ export class AccountServiceService {
 // here we will use the like service to make the get all likes function works after the login 
 mylikeservice=inject(LikesService);
 
+myhubservice=inject(PresencehubService)
 // to create signal 
  currentuser=signal<User|null>(null);
 
@@ -67,7 +69,7 @@ logout(){
 localStorage.removeItem('user');
 this.currentuser.set(null);
 
-
+this.myhubservice.StopHubconnection();
 }
 
 
@@ -77,6 +79,7 @@ localStorage.setItem('user',JSON.stringify(user));
       this.currentuser.set(user);
       this.mylikeservice.getlikeIds();
 
+      this.myhubservice.CreateHubConnection(user)
 
 }
 
