@@ -45,10 +45,12 @@
     
 @for (item of messageservice.returneddata()?.items; track item.id) {
 
-    <tr  >
+    <tr [] >
 
-    <td routerLink="{{getroute(item)}}">{{item.content}}</td>
-    <td routerLink="{{getroute(item)}}">
+    <td routerLink="{{getroute(item)}}" [queryParams]="{tab:'Messages'}"
+    >{{item.content}}</td>
+    <td routerLink="{{getroute(item)}}" [queryParams]="{tab:'Messages'}"
+     >
 
 <div >
 <img [src]="container ==='OutBox'? (item.recipientPhotoUrl ):(item.senderPhotoUrl)  "
@@ -59,7 +61,7 @@ class="rounded-circle me-2"
 <strong > {{container==="OutBox" ?item.recipientUserName:item.senderUserName }} </strong>
 </div >
     </td>
-    <td routerLink="{{getroute(item)}}"> {{item.messageSent}}</td>
+    <td routerLink="{{getroute(item)}}"  > {{item.messageSent}}</td>
 
 <td > <button class="btn btn-danger" (click)="deletemessage(item.id)" >Delete </button></td>
     </tr>

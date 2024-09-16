@@ -54,7 +54,7 @@ class="card-img img-thumbnail"
 <div class="card-footer">
 <div class="btn-group d-flex">
 <button class="btn btn-danger"> LIKE </button>
-<button class="btn btn-success"> DM </button>
+<button class="btn btn-success" (click)="SelectTab('Messages')"> DM </button>
 
 </div>
 
@@ -69,7 +69,7 @@ class="card-img img-thumbnail"
         <div class="col-7">
             <tabset class="member-tabs" #membertabs>
 <br>
-                <tab heading="Info About {{member.knownAs}}">
+                <tab heading="Info About {{member.knownAs}}" (selectTab)="OnTabActivated($event )">
                     <h4>
                     Description
                     </h4>
@@ -79,7 +79,7 @@ class="card-img img-thumbnail"
 
                 </tab>
 
-              <tab heading="Intersts">
+              <tab heading="Intersts"(selectTab)="OnTabActivated($event )">
                     <h4>
                     Intersts
                     </h4>
@@ -88,12 +88,12 @@ class="card-img img-thumbnail"
                     </p>
 
                 </tab>
-                              <tab heading="Messages">
+                              <tab heading="Messages"(selectTab)="OnTabActivated($event )">
                     <h4>
                     Messages 
                     </h4>
                     <p>
-                        <app-member-messages [username]="member.userName" ></app-member-messages>
+                        <app-member-messages [messages]="messages" [username]="member.userName" ></app-member-messages>
                     </p>
 
                 </tab>
