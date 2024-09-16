@@ -17,11 +17,11 @@ if(context.HttpContext.User.Identity?.IsAuthenticated !=true)return; // to check
 
 var id=resultcontext.HttpContext.User.GetUserid();
 // here we will get back the user repor from the service container 
-var repo=resultcontext.HttpContext.RequestServices.GetRequiredService<IUserRepository>();
-var user=await repo.GetUserById(id);
+var repo=resultcontext.HttpContext.RequestServices.GetRequiredService<IUnitOfWork>();
+var user=await repo.UserRepository.GetUserById(id);
 if(user ==null)return;
 user.LAstActiv=DateTime.UtcNow;
-await repo.SaveAllAsync();
+await repo.Complete();
 
     }
 }

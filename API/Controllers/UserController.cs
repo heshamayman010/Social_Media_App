@@ -12,7 +12,7 @@ using API.Helpers;
 
 namespace API.Controllers
 {
-    public class UserController(IUserRepository userrepo ,IMapper mapper,IPhotoService photoService) : BaseApiController
+    public class UserController(IUnitOfWork unitOfWork ,IMapper mapper,IPhotoService photoService) : BaseApiController
     {
 [Authorize]
     [HttpGet]
@@ -22,7 +22,7 @@ namespace API.Controllers
         parameters.currenusername=User.GetUsername();
 
       //   var userstoreturn=mapper.Map<IEnumerable<MemberDto>>(users); // the old way 
-     var  userstoreturn=await userrepo.GetAllMemebersDtoAsync(parameters);
+     var  userstoreturn=await unitOfWork.UserRepository.GetAllMemebersDtoAsync(parameters);
      Response.AddPaginationHeader(userstoreturn);
         return Ok(userstoreturn);
 
@@ -32,9 +32,9 @@ namespace API.Controllers
     [HttpGet("{id:int}")]
     public async Task<IActionResult> Getuser(int id){
 
-         // var user= await userrepo.GetUserByIdAsync(id) ; // old one 
+         // var user= await unitOfWork.UserRepository.GetUserByIdAsync(id) ; // old one 
 
-         var user =await userrepo.GetMemberDtoByIdAsync(id);
+         var user =await unitOfWork.UserRepository.GetMemberDtoByIdAsync(id);
          if(user==null){
 
             return BadRequest("No userwith this id found ");
@@ -52,7 +52,7 @@ namespace API.Controllers
     public async Task<IActionResult> Getuser(string username){
 
 
-         var user= await userrepo.GetMemberDtoByNameAsync(username) ;
+         var user= await unitOfWork.UserRepository.GetMemberDtoByNameAsync(username) ;
          if(user==null){
             return BadRequest("No user with this name found ");
          }
@@ -78,7 +78,7 @@ public async Task<IActionResult> Update(MemeberUpdateDto membertoupdate){
 // this was the old way before using the claims extension method in the user 
 // if(username==null)return BadRequest("the user name is nullllll ");
 
-var myuser=await userrepo.GetUserByUserNameAsync(User.GetUsername());
+var myuser=await unitOfWork.UserRepository.GetUserByUserNameAsync(User.GetUsername());
 
 if(myuser==null)return BadRequest("cant find this user ");
 
@@ -87,7 +87,7 @@ mapper.Map(membertoupdate,myuser);
 
 
 // nocontent is for the 204 status code 
-if(await userrepo.SaveAllAsync()) return NoContent();
+if(await unitOfWork.Complete()) return NoContent();
 
 return BadRequest("cant update this user data or maybe no data changed  ");
 }
@@ -99,7 +99,7 @@ return BadRequest("cant update this user data or maybe no data changed  ");
 public  async Task<ActionResult<PhotoDto>> AddPhoto(IFormFile file){
 
 var username=User.GetUsername();
-var user= await userrepo.GetUserByUserNameAsync(username);
+var user= await unitOfWork.UserRepository.GetUserByUserNameAsync(username);
 if(user==null) return BadRequest("cant upload this photo to the data base ");
 
 // then the function to upload the photo 
@@ -118,7 +118,7 @@ PublicId=result.PublicId
 
 user.Photos.Add(photo);
 
-if(await userrepo.SaveAllAsync())
+if(await unitOfWork.Complete())
 
 return CreatedAtAction(nameof(Getuser),new{username=user.UserName},mapper.Map<PhotoDto>(photo));  // it is the same as the old way using the url
 
@@ -134,7 +134,7 @@ return BadRequest("cant upload the photoooo");
 [HttpPut("set-main-photo/{photoid}")]
 public async Task<IActionResult> SetMainphot(int photoid ){
 
-var user= await userrepo.GetUserByUserNameAsync(User.GetUsername());
+var user= await unitOfWork.UserRepository.GetUserByUserNameAsync(User.GetUsername());
 if(user==null) return BadRequest("cant find this user ");
 
 var thechoosedphoto=user.Photos.FirstOrDefault(x=>x.Id==photoid);
@@ -145,7 +145,7 @@ var oldmainphoto=user.Photos.FirstOrDefault(x=>x.IsMain);
 if(oldmainphoto!=null) oldmainphoto.IsMain=false;
 
 thechoosedphoto.IsMain=true;
-if(await userrepo.SaveAllAsync())return NoContent()
+if(await unitOfWork.Complete())return NoContent()
 ;
 
 return BadRequest("updating the data base failed ");
@@ -157,7 +157,7 @@ return BadRequest("updating the data base failed ");
 [HttpDelete("delete-photo/{photoid:int}")]
 public async Task <IActionResult> Deletephoto(int photoid){
 
-var user=await userrepo.GetUserByUserNameAsync(User.GetUsername());
+var user=await unitOfWork.UserRepository.GetUserByUserNameAsync(User.GetUsername());
 
 if(user==null) return BadRequest("this user cant be found  this user name is not for any user  ");
 
@@ -172,7 +172,7 @@ if (result.Error !=null) return BadRequest("this photo couldnt be deleted from t
 }
 // then at the data base 
 user.Photos.Remove(photo);
-if(await userrepo.SaveAllAsync()) return Ok( );
+if(await unitOfWork.Complete()) return Ok( );
 
 return BadRequest("error has occured while updating the data base  ");
 

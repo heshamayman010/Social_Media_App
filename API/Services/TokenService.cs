@@ -28,7 +28,7 @@ var Key=new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenkey));
 var claims=new List<Claim>(){
 
 new(ClaimTypes.NameIdentifier,user.Id.ToString()),
-new(ClaimTypes.Name,user.UserName)
+new(ClaimTypes.Name,user.UserName!)
 };
 // for the part of the role usignt the rolemanger and usermanger 
 

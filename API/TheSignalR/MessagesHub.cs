@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace API.TheSignalR;
 
-public class MessagesHub(IMessagesRepository messagesrepo,IUserRepository userrepo,IMapper mapper):Hub
+public class MessagesHub(IUnitOfWork unitOfWork,IMapper mapper):Hub
 {
     public override async Task OnConnectedAsync()
     {
@@ -24,7 +24,9 @@ if(Context.User==null||string.IsNullOrEmpty(otheruser))throw new Exception("cant
 
    // and to get the messages thread 
 
-   var messages=messagesrepo.GetMessagesThread(Context.User.GetUsername(),otheruser!);
+   var messages=unitOfWork.MessagesRepository.GetMessagesThread(Context.User.GetUsername(),otheruser!);
+   // and to use the uow her after we find any change of the data 
+//    if(unitOfWork.HasChanges()) await unitOfWork.Complete();
    
 await Clients.Group(groupname).SendAsync("RecieveMessage",messages);
 
@@ -49,9 +51,9 @@ public async Task SendMessage(CreateMessagesDto createMessagesDto){
    
     if(username==createMessagesDto.RecipientUsername)   // here you cant send messages to your self 
                            throw new HubException("you cant send messages to yourself");
-var sender=await userrepo.GetUserByUserNameAsync(username);
-var recipient=await userrepo.GetUserByUserNameAsync(createMessagesDto.RecipientUsername);
-if(sender==null || recipient==null) throw new Exception("cant send messages to null users ");
+var sender=await unitOfWork.UserRepository.GetUserByUserNameAsync(username);
+var recipient=await unitOfWork.UserRepository.GetUserByUserNameAsync(createMessagesDto.RecipientUsername);
+if(sender==null || recipient==null||sender.UserName==null||recipient.UserName==null) throw new Exception("cant send messages to null users ");
 
 
 var message=new Messages{
@@ -61,9 +63,9 @@ Content=createMessagesDto.Content,
 SenderUserName=sender.UserName,
 RecipientUserName=recipient.UserName
 };
-messagesrepo.AddMessage(message);
+unitOfWork.MessagesRepository.AddMessage(message);
 
-if(await messagesrepo.SaveAllAsync())
+if(await unitOfWork.Complete())
 {
 
 var datatosend=mapper.Map<MessagesDto>(message);

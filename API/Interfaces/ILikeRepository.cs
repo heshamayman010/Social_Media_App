@@ -20,5 +20,4 @@ void AddLike(LikeUser like);
 void DeleteLike(LikeUser like);
 
 
-Task<bool> SaveChanges();
 }

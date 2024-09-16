@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
-    public class MessagesController(IMessagesRepository messagesrepo,IUserRepository userrepo,IMapper mapper)
+    public class MessagesController(IUnitOfWork unitOfWork,IMapper mapper)
      : BaseApiController
     {
 
@@ -22,9 +22,9 @@ public async Task<ActionResult<MessagesDto>>CreateMessage(CreateMessagesDto mess
     if(username==messagesDtocreate.RecipientUsername)return   // here you cant send messages to your self 
                             BadRequest("cant send messages to yourself");
 
-var sender=await userrepo.GetUserByUserNameAsync(username);
-var recipient=await userrepo.GetUserByUserNameAsync(messagesDtocreate.RecipientUsername);
-if(sender==null || recipient==null) return BadRequest("cant send messages to null users ");
+var sender=await unitOfWork.UserRepository.GetUserByUserNameAsync(username);
+var recipient=await unitOfWork.UserRepository.GetUserByUserNameAsync(messagesDtocreate.RecipientUsername);
+if(sender==null || recipient==null||sender.UserName==null||recipient.UserName==null) return BadRequest("cant send messages to null users ");
 
 
 var message=new Messages{
@@ -34,9 +34,9 @@ Content=messagesDtocreate.Content,
 SenderUserName=sender.UserName,
 RecipientUserName=recipient.UserName
 };
-messagesrepo.AddMessage(message);
+unitOfWork.MessagesRepository.AddMessage(message);
 
-if(await messagesrepo.SaveAllAsync())
+if(await unitOfWork.Complete())
 {
 return Ok(mapper.Map<MessagesDto>(message));
 }
@@ -49,7 +49,7 @@ public async Task<ActionResult<IEnumerable<MessagesDto>>> GetMessagesForUsers([F
 {
     // we will only specify this propery as it will be from the user token (usernsame)
 messagesParams.username=User.GetUsername();
-var messages=await messagesrepo.GetMessagesForUser(messagesParams);
+var messages=await unitOfWork.MessagesRepository.GetMessagesForUser(messagesParams);
 
 Response.AddPaginationHeader(messages);
 
@@ -67,7 +67,7 @@ public async Task<ActionResult<IEnumerable<MessagesDto>>> GetCurrentUserthreads(
 
 var currentusername=User.GetUsername();
 
-var messagestoreturn=await messagesrepo.GetMessagesThread(currentusername,username);
+var messagestoreturn=await unitOfWork.MessagesRepository.GetMessagesThread(currentusername,username);
 
 return Ok(messagestoreturn);
 }
@@ -79,7 +79,7 @@ public async Task<ActionResult>DeletePhoto(int id )
 {
 var username=User.GetUsername();
 
-var messagetodelete=await messagesrepo.GetMessage(id);
+var messagetodelete=await unitOfWork.MessagesRepository.GetMessage(id);
 
 if(messagetodelete==null)return BadRequest("cant delete this message");
 
@@ -88,11 +88,11 @@ if(messagetodelete.RecipientUserName==username)messagetodelete.RecipientDeletete
 
 if(messagetodelete is {SenderDeleteted:true,SenderDeleteted:true}){
 
-    messagesrepo.DeleteMessage(messagetodelete);
+    unitOfWork.MessagesRepository.DeleteMessage(messagetodelete);
 }
 
 
-if(await messagesrepo.SaveAllAsync())return Ok();
+if(await unitOfWork.Complete())return Ok();
 
 return BadRequest("error with deleting the message");
 }

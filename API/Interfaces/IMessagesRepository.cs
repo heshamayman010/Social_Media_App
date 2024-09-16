@@ -16,7 +16,6 @@ Task<Messages?>GetMessage(int id );
 Task<PageList<MessagesDto>>GetMessagesForUser(MessagesParams messagesParams);
 
 Task<IEnumerable<MessagesDto>> GetMessagesThread(string CurrentUsername,string RecipientUserName);
-Task<bool>SaveAllAsync();
 
 
 

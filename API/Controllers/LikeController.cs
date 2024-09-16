@@ -8,7 +8,7 @@ namespace API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class LikeController(ILikeRepository repo) : BaseApiController
+    public class LikeController(IUnitOfWork unitOfWork) : BaseApiController
     {
 [HttpPost("{targetuserid}")]
 public async Task<IActionResult> ToggleLike(int targetuserid){
@@ -19,7 +19,7 @@ if(sourceuserid==targetuserid) return BadRequest("cant make like here ");  // he
 
 // and then we will check if there is teh same like in the data base 
 
-var oldlike=await repo.GetUserlike(sourceuserid,targetuserid);
+var oldlike=await unitOfWork.LikeRepository.GetUserlike(sourceuserid,targetuserid);
 
 if (oldlike==null){
 
@@ -29,14 +29,14 @@ TargetUserId=targetuserid
     };
 
 
-repo.AddLike(newlike);
+unitOfWork.LikeRepository.AddLike(newlike);
 }
 
 
 else{     // here that means the user press like on photo that he liked before so we will delete it 
- repo.DeleteLike(oldlike);
+ unitOfWork.LikeRepository.DeleteLike(oldlike);
 }
-if(await repo.SaveChanges())return Ok();
+if(await unitOfWork.Complete())return Ok();
 return BadRequest("cant add this like to the data base");
 
 }
@@ -50,13 +50,13 @@ return BadRequest("cant add this like to the data base");
 public async Task <IActionResult> GetcurrentUserlikedIds(){
 
 var sourceuserid=User.GetUserid();
-return Ok(await repo.GetCurrentUserLikeIds(sourceuserid));
+return Ok(await unitOfWork.LikeRepository.GetCurrentUserLikeIds(sourceuserid));
 } 
 
 [HttpGet]
 public async Task<IActionResult> GetuserLiked(string predicate){
 
-var users= await repo.GetUserLikess(predicate,User.GetUserid());
+var users= await unitOfWork.LikeRepository.GetUserLikess(predicate,User.GetUserid());
 
 return Ok(users);
 }
